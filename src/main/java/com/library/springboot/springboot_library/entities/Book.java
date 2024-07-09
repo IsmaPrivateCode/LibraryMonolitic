@@ -15,7 +15,4 @@ public class Book {
     private String publisher;
     private double price;
 
-
-    
-
 }
