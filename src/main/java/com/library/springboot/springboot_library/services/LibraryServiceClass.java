@@ -17,12 +17,38 @@ public class LibraryServiceClass implements LibraryService{
 
     @Override
     public List<Book> findAll() {
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        return libraryRepository.findAll();
     }
 
     @Override
     public Optional<Book> findById(long id) {
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        Optional<Book> book=libraryRepository.findById(id);
+        return book;
+    }
+
+    @Override
+    public Book save(Book book) {
+        if(book==null) return null;
+        
+        return libraryRepository.save(book);
+    }
+
+    @Override
+    public Book update(Book book) {
+        if(book == null) return null;
+        if(findById(book.getId()).isEmpty()) return null;
+        return libraryRepository.save(book);
+    }
+
+    @Override
+    public boolean deleteById(long id) {
+        Optional<Book> book = findById(id);
+        if(book.isPresent()){
+            deleteById(id);
+            return true;
+        }
+
+        return false;
     }
 
 
