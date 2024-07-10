@@ -14,4 +14,10 @@ public interface LibraryService {
 
     public Optional<Book> findById(long id);
 
+    public Book save(Book book);
+
+    public Book update(Book book);
+
+    public boolean deleteById(long id);
+
 }
