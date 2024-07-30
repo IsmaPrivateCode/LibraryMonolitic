@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 
 
@@ -111,11 +112,30 @@ public class LibrariyRestController {
             return null;
         }
 
-        logger.info("Book that is going to save: " +book.toString());
+        logger.info("Book that is going to be save: " +book.toString());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(book.getId()).toUri();
         return ResponseEntity.created(location).body(adapter.toDTO(book));
     }
     
+    @PutMapping
+    public ResponseEntity<?> updateEvent(@Valid @RequestBody Book book){
+        logger.info("====================");
+        logger.info("Endpoint: /app");
+        logger.info("Save book a Response Entity (PUT) request");
+        logger.info("====================");
+
+        Book updated = libraryService.update(book);
+
+        if(updated==null){
+            logger.info("==================");
+            logger.warn("Cannot be update the book " + book.toString());
+            return null;
+        }
+
+        logger.info("Book that is going to be update: " +book.toString());
+        return ResponseEntity.ok(adapter.toDTO(book));
+
+    }
     
 
 }
