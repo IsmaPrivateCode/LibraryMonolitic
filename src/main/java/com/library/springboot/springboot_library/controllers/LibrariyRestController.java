@@ -100,7 +100,7 @@ public class LibrariyRestController {
     }
 
     @PostMapping
-    public ResponseEntity<BookDTO> save(@Valid @RequestBody Book book){
+    public ResponseEntity<BookDTO> saveBook(@Valid @RequestBody Book book){
         logger.info("====================");
         logger.info("Endpoint: /app");
         logger.info("Save book a Response Entity (POST) request");
@@ -118,7 +118,7 @@ public class LibrariyRestController {
     }
     
     @PutMapping
-    public ResponseEntity<?> updateEvent(@Valid @RequestBody Book book){
+    public ResponseEntity<?> updateBook(@Valid @RequestBody Book book){
         logger.info("====================");
         logger.info("Endpoint: /app");
         logger.info("Save book a Response Entity (PUT) request");
