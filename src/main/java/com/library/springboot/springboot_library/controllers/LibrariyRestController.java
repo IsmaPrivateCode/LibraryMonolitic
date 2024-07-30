@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -58,7 +59,7 @@ public class LibrariyRestController {
     public BookDTO findBookByName(@PathVariable Long id){
         logger.info("====================");
         logger.info("Endpoint: /app/book/"+id);
-        logger.info("Showing book by name with a Response Entity (GET) request");
+        logger.info("Showing book by ID with a Response Entity (GET) request");
         logger.info("====================");
         Book book = libraryService.findById(id).orElse(null);
 
@@ -73,8 +74,24 @@ public class LibrariyRestController {
         logger.info("Book " + id +" is showed succesfully");
         logger.info("===================");
         return adapter.toDTO(book);
-        
-        
+    }
+
+    @DeleteMapping("/delete/book/{id}")
+    public ResponseEntity<?> deleteEntity(@PathVariable Long id){
+        logger.info("====================");
+        logger.info("Endpoint: /delete/book/"+id);
+        logger.info("Deleting book by ID with a Response Entity (DELETE) request");
+        logger.info("====================");
+
+        if(libraryService.findById(id)==null){
+            logger.info("====================");
+            logger.warn("The book serch by ID: " + id + " cannot be found");
+            logger.info("====================");
+            return null;
+        }
+
+        return ResponseEntity.ok(libraryService.deleteById(id));
+
     }
     
     
