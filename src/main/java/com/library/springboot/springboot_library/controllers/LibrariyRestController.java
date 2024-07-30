@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.library.springboot.springboot_library.entities.Book;
+import com.library.springboot.springboot_library.entities.dto.BookAdapter;
+import com.library.springboot.springboot_library.entities.dto.BookDTO;
 import com.library.springboot.springboot_library.services.LibraryService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 @RestController
@@ -24,6 +28,9 @@ public class LibrariyRestController {
 
     @Autowired
     LibraryService libraryService;
+
+    @Autowired
+    BookAdapter adapter;
 
     private static final Logger logger = LoggerFactory.getLogger(LibrariyRestController.class);
 
@@ -47,6 +54,30 @@ public class LibrariyRestController {
         logger.info("===================");
         return ResponseEntity.ok(books);
     }
+
+    @GetMapping("/book/{id}")
+    public BookDTO findBookByName(@PathVariable Long id){
+        logger.info("====================");
+        logger.info("Endpoint: /app/book/"+id);
+        logger.info("Showing book by name with a Response Entity (GET) request");
+        logger.info("====================");
+        Book book = libraryService.findById(id).orElse(null);
+
+        if(book==null){
+            logger.info("====================");
+            logger.warn("The book serch by ID: " + id + " cannot be found");
+            logger.info("====================");
+            return null;
+        }
+
+        logger.info("===================");
+        logger.info("Book " + id +" is showed succesfully");
+        logger.info("===================");
+        return adapter.toDTO(book);
+        
+        
+    }
+    
     
 
 }
