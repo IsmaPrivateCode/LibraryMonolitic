@@ -2,14 +2,18 @@ package com.library.springboot.springboot_library.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.library.springboot.springboot_library.entities.Book;
 import com.library.springboot.springboot_library.entities.dto.BookAdapter;
 import com.library.springboot.springboot_library.entities.dto.BookDTO;
 import com.library.springboot.springboot_library.services.LibraryService;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
+import java.net.URI;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -19,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 
 
@@ -76,10 +81,10 @@ public class LibrariyRestController {
         return adapter.toDTO(book);
     }
 
-    @DeleteMapping("/delete/book/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteEntity(@PathVariable Long id){
         logger.info("====================");
-        logger.info("Endpoint: /delete/book/"+id);
+        logger.info("Endpoint: /app/delete/"+id);
         logger.info("Deleting book by ID with a Response Entity (DELETE) request");
         logger.info("====================");
 
@@ -91,7 +96,24 @@ public class LibrariyRestController {
         }
 
         return ResponseEntity.ok(libraryService.deleteById(id));
+    }
 
+    @PostMapping
+    public ResponseEntity<BookDTO> save(@Valid @RequestBody Book book){
+        logger.info("====================");
+        logger.info("Endpoint: /app");
+        logger.info("Save book a Response Entity (POST) request");
+        logger.info("====================");
+
+        if(book == null){
+            logger.info("==================");
+            logger.warn("There is not book ton save");
+            return null;
+        }
+
+        logger.info("Book that is going to save: " +book.toString());
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(book.getId()).toUri();
+        return ResponseEntity.created(location).body(adapter.toDTO(book));
     }
     
     
