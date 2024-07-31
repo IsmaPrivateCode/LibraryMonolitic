@@ -1,7 +1,5 @@
 package com.library.springboot.springboot_library.entities;
 
-import org.springframework.web.bind.annotation.ModelAttribute;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
